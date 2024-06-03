@@ -73,4 +73,17 @@ async function saveActivity(data) {
   return res;
 }
 
-export { formatData, saveActivity };
+/**
+ * @returns {Promise<Array>}
+ */
+async function getActivities() {
+  const res = await fetch(getVariable('VITE_API_URL') + '/api/activities');
+  const response = await res.json();
+  const formattedData = formatData(response);
+  if (formattedData.length <= 0) {
+    return [];
+  }
+  return formattedData;
+}
+
+export { formatData, saveActivity, getActivities };

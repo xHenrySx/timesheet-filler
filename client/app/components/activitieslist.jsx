@@ -3,34 +3,32 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { getVariable } from '../utils/variables';
-import { formatData } from '../utils/activities';
+import { formatData, getActivities } from '../utils/activities';
 
 export function ActivitiesList() {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    fetch(getVariable('VITE_API_URL') + '/api/activities')
-      .then(response => response.json())
-      .then(data => {
-        const formattedData = formatData(data);
-        setData(formattedData);
+    async function fetchData() {
+      setData(await getActivities());
+    }
 
-        //Generar columnas dinamicamente
-        if (formattedData.length <= 0) {
-          setColumns([]);
-        }
 
-        const columnNames = Object.keys(formattedData[0]);
-        const newColumns = columnNames.map(column => ({
-          field: column,
-          header: column,
-        }));
-        setColumns(newColumns);
-      })
-      .catch(error => console.error(error));
+    fetchData();
   }, []);
 
+  useEffect(() => {
+    if (data.length <= 0) {
+      return;
+    }
+    const columnNames = Object.keys(data[0]);
+    const newColumns = columnNames.map(column => ({
+      field: column,
+      header: column,
+    }));
+    setColumns(newColumns);
+  },[data]);
 
   return (
     <Card title="Actividades">

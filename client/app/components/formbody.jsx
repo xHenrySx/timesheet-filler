@@ -3,6 +3,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { FloatLabel } from 'primereact/floatlabel';
+import { AutoComplete } from 'primereact/autocomplete';
 
 const FormBody = ({formData, handleChange, isMobile}) => {
   return (
@@ -46,6 +47,24 @@ const FormBody = ({formData, handleChange, isMobile}) => {
           required
         />
         <label htmlFor="duration">Duracion</label>
+      </FloatLabel>
+      <FloatLabel>
+        <InputText
+          id="jiraticket"
+          name="jiraTicket"
+          value={formData?.jiraTicket}
+          onChange={handleChange}
+        />
+        <label htmlFor="jiraticket">Jira Ticket</label>
+      </FloatLabel>
+      <FloatLabel>
+        <InputText
+          id="jiraclientticket"
+          name="jiraClientTicket"
+          value={formData?.jiraClientTicket}
+          onChange={handleChange}
+        />
+        <label htmlFor="jiraclientticket">Jira Client Ticket</label>
       </FloatLabel>
     </form>
   );

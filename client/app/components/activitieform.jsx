@@ -9,12 +9,16 @@ import { addLocale } from 'primereact/api';
 
 import '../styles/activitieform.css';
 
+const defaultFormData = {
+  date: new Date(),
+  description: '',
+  duration: 1,
+  jiraTicket: '',
+  jiraClientTicket: '',
+}
+
 const ActivitieForm = () => {
-  const [formData, setFormData] = useState({
-    date: new Date(),
-    description: '',
-    duration: 1,
-  });
+  const [formData, setFormData] = useState(defaultFormData);
   const toast = useRef(null);
 
   const isMobile =
@@ -75,11 +79,7 @@ const ActivitieForm = () => {
       const res = await saveActivity(formData);
       console.log(res);
       if (res.response) {
-        setFormData({
-          date: new Date().toISOString().split('T')[0],
-          description: '',
-          duration: 1,
-        });
+        setFormData(defaultFormData);
         toast.current.show({
           severity: 'success',
           summary: 'Actividad guardada',

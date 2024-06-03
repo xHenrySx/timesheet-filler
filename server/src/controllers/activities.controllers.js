@@ -6,7 +6,9 @@ import Activitie from '../database/models/activities.model.js';
  * @returns {Promise<Response>}
  */
 export const createActivitie = async ({ body }, res) => {
-  const { date, description, duration } = body;
+  const { date, description, duration, jiraTicket, jiraClientTicket } = body;
+
+  console.log('body', body);
 
   if (!date || !description || !duration) {
     return res
@@ -18,6 +20,8 @@ export const createActivitie = async ({ body }, res) => {
     date,
     description,
     duration,
+    jiraTicket,
+    jiraClientTicket,
   });
 
   await newActivitie.save();
