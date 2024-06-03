@@ -76,19 +76,3 @@ main {
 .form-container {
   margin: 5rem 0;
 }
-
-
-#form-actividades {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0rem 2rem;
-}
-
-#form-actividades #date {
-  max-width: 20rem;
-}
-
-#form-actividades #description {
-  width: 100%;
-}

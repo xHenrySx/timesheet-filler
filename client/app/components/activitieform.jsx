@@ -1,11 +1,14 @@
 import { saveActivity } from '../utils/activities';
+import FormBody from './formbody';
+
 import { useState, useCallback, useRef } from 'react';
-import { Calendar } from 'primereact/calendar';
-import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
+
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { addLocale } from 'primereact/api';
+
+import '../styles/activitieform.css';
+
 const ActivitieForm = () => {
   const [formData, setFormData] = useState({
     date: new Date(),
@@ -108,42 +111,12 @@ const ActivitieForm = () => {
   return (
     <>
       <Toast ref={toast} />
+      <FormBody
+        handleChange={handleChange}
+        formData={formData}
+        isMobile={isMobile}
+      />
       <div className="form-container">
-        <form id="form-actividades">
-          <Calendar
-            value={formData.date}
-            name="date"
-            id="date"
-            required
-            placeholder="Fecha"
-            onChange={handleChange}
-            dateFormat="dd/mm/yy"
-            locale="es"
-            showIcon
-            style={{ width: '100%' }}
-            touchUI={isMobile}
-          />
-          <InputText
-            id="description"
-            name="description"
-            placeholder="descripcion"
-            minLength={1}
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-          <InputNumber
-            id="duration"
-            name="duration"
-            placeholder="Duracion"
-            value={formData.duration}
-            onValueChange={handleChange}
-            minFractionDigits={0}
-            maxFractionDigits={2}
-            min={0.5}
-            required
-          />
-        </form>
         <Button
           form="form-actividades"
           label="Guardar"
