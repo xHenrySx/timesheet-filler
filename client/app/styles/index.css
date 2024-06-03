@@ -76,59 +76,14 @@ main {
 
 .form-contenedor {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-template-columns: 0.5fr 1.5fr 0.5fr;
   gap: 1rem;
 }
 
-.form-contenedor textarea {
-  font-size: 16px;
-  resize: none;
-  overflow: hidden;
-}
-
-.form-contenedor input[type="number"] {
-  max-width: 30%;
-  text-align: center;
-}
-
-.form-contenedor input[type="date"],
-textarea,
-.form-contenedor input[type="number"] {
-  padding: 0.8rem;
-  border: 1px solid var(--primary);
-  border-radius: 0.5rem;
-  font-size: 1.4rem;
-  color: var(--primary-colortext);
-  background-color: var(--white);
-  cursor: pointer;
-  transition: all 0.08s;
-}
-
-.form-contenedor input[type="date"]:focus,
-textarea:focus,
-.form-contenedor input[type="number"]:focus {
-  outline: 2px solid var(--secondary);
-}
-
-.form-contenedor input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-}
 
 .submit-contenedor {
   grid-column: 2 / 3;
   display: flex;
   justify-content: center;
 
-}
-
-
-.submit-contenedor button {
-  background-color: var(--primary);
-  color: var(--white);
-  border: none;
-  border-radius: 0.5rem;
-  padding: 1rem 2rem;
-  font-size: 1.6rem;
-  cursor: pointer;
-  transition: all 0.08s;
 }
