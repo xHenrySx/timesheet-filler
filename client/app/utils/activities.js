@@ -6,6 +6,7 @@ import { formatDate } from './date';
  * @returns {Array}
  */
 function formatData(data) {
+  data = defaultContent(data);
   return data.map(activity => {
     return {
       Fecha: formatDate(activity.date),
@@ -14,6 +15,20 @@ function formatData(data) {
       'Jira Ticket': activity.jiraTicket,
       'Jira Cliente Ticket': activity.jiraClientTicket,
     };
+  });
+}
+/**
+ * @param {Array} data
+ * @returns {Array}
+ */
+function defaultContent(data) {
+  return data.map(item => {
+    for (const key in item) {
+      if (item[key] === null) {
+        item[key] = '-';
+      }
+    }
+    return item;
   });
 }
 
@@ -46,6 +61,11 @@ async function saveActivity(data) {
         body: JSON.stringify(data),
       }
     );
+
+    if (!response.ok) {
+      console.error(`Error al guardar actividad: ${response.statusText}`);
+      res = false;
+    }
   } catch (error) {
     console.error(`Error al guardar actividad: ${error}`);
     res = false;
