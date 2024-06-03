@@ -73,17 +73,22 @@ main {
   color: var(--secondary);
 }
 
-
-.form-contenedor {
-  display: grid;
-  grid-template-columns: 0.5fr 1.5fr 0.5fr;
-  gap: 1rem;
+.form-container {
+  margin: 5rem 0;
 }
 
 
-.submit-contenedor {
-  grid-column: 2 / 3;
+#form-actividades {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0rem 2rem;
+}
 
+#form-actividades #date {
+  max-width: 20rem;
+}
+
+#form-actividades #description {
+  width: 100%;
 }

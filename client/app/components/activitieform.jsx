@@ -1,5 +1,5 @@
 import { saveActivity } from '../utils/activities';
-import { useState, useCallback , useRef} from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Calendar } from 'primereact/calendar';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
@@ -107,44 +107,49 @@ const ActivitieForm = () => {
   return (
     <>
       <Toast ref={toast} />
-      <form className="form-contenedor">
-        <Calendar
-          value={formData.date}
-          name="date"
-          id="date"
-          required
-          placeholder="Fecha"
-          onChange={handleChange}
-          dateFormat="dd/mm/yy"
-          locale="es"
-          showIcon
-          style={{ width: '100%' }}
-          touchUI={isMobile}
+      <div className="form-container">
+        <form id='form-actividades'>
+          <Calendar
+            value={formData.date}
+            name="date"
+            id="date"
+            required
+            placeholder="Fecha"
+            onChange={handleChange}
+            dateFormat="dd/mm/yy"
+            locale="es"
+            showIcon
+            style={{ width: '100%' }}
+            touchUI={isMobile}
+          />
+          <InputText
+            id="description"
+            name="description"
+            placeholder="descripcion"
+            minLength={1}
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+          <InputNumber
+            id="duration"
+            name="duration"
+            placeholder="Duracion"
+            value={formData.duration}
+            onValueChange={handleChange}
+            minFractionDigits={0}
+            maxFractionDigits={2}
+            min={0.5}
+            required
+          />
+        </form>
+        <Button
+          form='form-actividades'
+          label="Guardar"
+          onClick={handleSubmit}
+          className="p-button-raised p-button-success"
         />
-        <InputText
-          id="description"
-          name="description"
-          placeholder="descripcion"
-          minLength={1}
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-        <InputNumber
-          id="duration"
-          name="duration"
-          placeholder="Duracion"
-          value={formData.duration}
-          onValueChange={handleChange}
-          minFractionDigits={0}
-          maxFractionDigits={2}
-          min={0.5}
-          required
-        />
-        <div className="submit-contenedor">
-          <Button type="submit" label="Enviar" onClick={handleSubmit} />
-        </div>
-      </form>
+      </div>
     </>
   );
 };
