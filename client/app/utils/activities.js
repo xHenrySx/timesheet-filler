@@ -2,6 +2,8 @@ import { getVariable } from './variables';
 import { formatDate } from './date';
 
 /**
+ * This function formats the data to be displayed in the table
+ * also each field name is the name displayed in the table
  * @param {Array} data
  * @returns {Array}
  */
@@ -30,16 +32,6 @@ function defaultContent(data) {
     }
     return item;
   });
-}
-
-function getColumns() {
-  return [
-    { field: 'Fecha', header: 'Fecha' },
-    { field: 'Descripcion', header: 'Descripcion' },
-    { field: 'Duracion', header: 'Duracion' },
-    { field: 'Jira Ticket', header: 'Jira Ticket' },
-    { field: 'Jira Cliente Ticket', header: 'Jira Cliente Ticket' },
-  ];
 }
 
 /**
@@ -73,4 +65,4 @@ async function saveActivity(data) {
   return res;
 }
 
-export { formatData, getColumns, saveActivity };
+export { formatData, saveActivity };

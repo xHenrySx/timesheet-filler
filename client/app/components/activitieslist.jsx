@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { getVariable } from '../utils/variables';
-import { formatData, getColumns } from '../utils/activities';
+import { formatData } from '../utils/activities';
 
 export function ActivitiesList() {
   const [data, setData] = useState([]);
@@ -12,20 +12,32 @@ export function ActivitiesList() {
   useEffect(() => {
     fetch(getVariable('VITE_API_URL') + '/api/activities')
       .then(response => response.json())
-      .then(data => setData(formatData(data)))
+      .then(data => {
+        const formattedData = formatData(data);
+        setData(formattedData);
+
+        //Generar columnas dinamicamente
+        if (formattedData.length <= 0) {
+          setColumns([]);
+        }
+
+        const columnNames = Object.keys(formattedData[0]);
+        const newColumns = columnNames.map(column => ({
+          field: column,
+          header: column,
+        }));
+        setColumns(newColumns);
+      })
       .catch(error => console.error(error));
   }, []);
 
-  useEffect(() => {
-    setColumns(getColumns());
-  }, []);
 
   return (
     <Card title="Actividades">
       <DataTable
         value={data}
         tableStyle={{
-          minWidth: '50rem'
+          minWidth: '50rem',
         }}
         paginator
         rows={5}
