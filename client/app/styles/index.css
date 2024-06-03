@@ -1,0 +1,134 @@
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --primary: #2457ac;
+  --secondary: #0b80e0;
+  --primary-colortext: #333333;
+  --accent-colortext: #12c1cb;
+  color-scheme: light dark;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  color: light-dark(var(--primary-colortext) var(--white));
+  background-color: light-dark(var(--white) var(--black));
+  font-family: "Radio Canada Big", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+[class*="contenedor"],
+main {
+  width: min(95%, 120rem);
+  margin: 3rem auto;
+}
+
+.logo {
+  width: fit-content;
+}
+
+.header .logo img {
+  width: 100%;
+  height: auto;
+}
+
+.header .barra {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header .barra .navigation {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.navigation a {
+  text-align: center;
+  text-decoration: none;
+  color: light-dark(var(--primary-colortext) var(--white));
+  padding: 1rem;
+}
+
+.header .barra .navigation a:hover,
+.navigation .active {
+  color: var(--secondary);
+}
+
+
+.form-contenedor {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr 0.1fr;
+  gap: 1rem;
+}
+
+.form-contenedor textarea {
+  font-size: 16px;
+  resize: none;
+  overflow: hidden;
+}
+
+.form-contenedor input[type="number"] {
+  max-width: 30%;
+  text-align: center;
+}
+
+.form-contenedor input[type="date"],
+textarea,
+.form-contenedor input[type="number"] {
+  padding: 0.8rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--primary-colortext);
+  background-color: var(--white);
+  cursor: pointer;
+  transition: all 0.08s;
+}
+
+.form-contenedor input[type="date"]:focus,
+textarea:focus,
+.form-contenedor input[type="number"]:focus {
+  outline: 2px solid var(--secondary);
+}
+
+.form-contenedor input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.submit-contenedor {
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: center;
+
+}
+
+
+.submit-contenedor button {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.08s;
+}
