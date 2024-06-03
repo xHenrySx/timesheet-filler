@@ -69,8 +69,9 @@ const ActivitieForm = () => {
   const handleSubmit = useCallback(
     async e => {
       e.preventDefault();
-      const response = await saveActivity(formData);
-      if (response) {
+      const res = await saveActivity(formData);
+      console.log(res);
+      if (res.response) {
         setFormData({
           date: new Date().toISOString().split('T')[0],
           description: '',
@@ -86,7 +87,7 @@ const ActivitieForm = () => {
         toast.current.show({
           severity: 'error',
           summary: 'Error al guardar',
-          detail: 'Hubo un error al guardar la actividad',
+          detail: `${res.message}`,
           life: 3000,
         });
       }
@@ -108,7 +109,7 @@ const ActivitieForm = () => {
     <>
       <Toast ref={toast} />
       <div className="form-container">
-        <form id='form-actividades'>
+        <form id="form-actividades">
           <Calendar
             value={formData.date}
             name="date"
@@ -144,7 +145,7 @@ const ActivitieForm = () => {
           />
         </form>
         <Button
-          form='form-actividades'
+          form="form-actividades"
           label="Guardar"
           onClick={handleSubmit}
           className="p-button-raised p-button-success"

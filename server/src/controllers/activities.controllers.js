@@ -9,7 +9,9 @@ export const createActivitie = async ({ body }, res) => {
   const { date, description, duration } = body;
 
   if (!date || !description || !duration) {
-    return res.status(400).json({ message: 'Please enter all fields' });
+    return res
+      .status(400)
+      .json({ message: 'Por Favor complete todos los campos' });
   }
 
   const newActivitie = new Activitie({
@@ -19,8 +21,7 @@ export const createActivitie = async ({ body }, res) => {
   });
 
   await newActivitie.save();
-
-  return res.status(200).json('Activitie created');
+  return res.status(200).json({ message: 'Activitie created' });
 };
 
 /**

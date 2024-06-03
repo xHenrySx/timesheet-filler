@@ -40,7 +40,10 @@ function defaultContent(data) {
  * @returns {Promise<Boolean>}
  */
 async function saveActivity(data) {
-  let res = true;
+  const res = {
+    response: true,
+    message: 'Actividad guardada',
+  };
   try {
     const response = await fetch(
       getVariable('VITE_API_URL') + '/api/activities',
@@ -53,14 +56,19 @@ async function saveActivity(data) {
         body: JSON.stringify(data),
       }
     );
+    const result = await response.json();
+    console.log('result', result);
 
     if (!response.ok) {
-      console.error(`Error al guardar actividad: ${response.statusText}`);
-      res = false;
+      // En response viene el error como {message: ...}
+      console.error(`Error al guardar actividad: ${result.message}`);
+      res.response = false;
+      res.message = result.message;
     }
   } catch (error) {
     console.error(`Error al guardar actividad: ${error}`);
-    res = false;
+    res.response = false;
+    res.message = error;
   }
   return res;
 }
