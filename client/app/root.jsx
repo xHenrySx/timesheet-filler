@@ -1,6 +1,5 @@
 import { Links, Meta, Outlet, Scripts } from '@remix-run/react';
 import styles from './styles/index.css?url';
-import taildwind from './styles/tailwind.css?url';
 import Header from './components/header';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/themes/lara-dark-indigo/theme.css';
@@ -27,10 +26,6 @@ export function links() {
     {
       rel: 'stylesheet',
       href: styles,
-    },
-    {
-      rel: 'stylesheet',
-      href: taildwind,
     },
     {
       rel: 'preconnect',
