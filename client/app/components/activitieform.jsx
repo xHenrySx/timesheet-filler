@@ -15,10 +15,11 @@ const defaultFormData = {
   duration: 1,
   jiraTicket: '',
   jiraClientTicket: '',
-}
+};
 
 const ActivitieForm = () => {
   const [formData, setFormData] = useState(defaultFormData);
+  const [lastFormDataSubmited, setLastFormDataSubmited] = useState({});
   const toast = useRef(null);
 
   const isMobile =
@@ -77,7 +78,6 @@ const ActivitieForm = () => {
     async e => {
       e.preventDefault();
       const res = await saveActivity(formData);
-      console.log(res);
       if (res.response) {
         setFormData(defaultFormData);
         toast.current.show({
