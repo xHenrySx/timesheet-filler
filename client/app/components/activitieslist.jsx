@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
-import { getVariable } from '../utils/variables';
-import { formatData, getActivities } from '../utils/activities';
+import { getActivities } from '../utils/activities';
 
 export function ActivitiesList() {
   const [data, setData] = useState([]);
