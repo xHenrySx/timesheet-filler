@@ -4,6 +4,7 @@ import Header from './components/header';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/themes/lara-dark-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 export function meta() {
   return [
     { charset: 'utf-8' },
@@ -11,7 +12,7 @@ export function meta() {
     { title: 'Timesheet Filler' },
     {
       name: 'description',
-      content: 'A simple app to fill activities in Sodep',
+      content: 'A simple app to fill activities in Sodeppp',
     },
     { name: 'theme-color', content: '#390faf' },
   ];
