@@ -15,11 +15,24 @@ const defaultFormData = {
   duration: 1,
   jiraTicket: '',
   jiraClientTicket: '',
+  project: '',
+};
+
+const loadingButton = {
+  label: 'Guardando',
+  icon: 'pi pi-spin pi-spinner',
+  loading: true,
+};
+
+const defaultButton = {
+  label: 'Guardar',
+  icon: 'pi pi-check',
+  loading: false,
 };
 
 const ActivitieForm = () => {
   const [formData, setFormData] = useState(defaultFormData);
-  const [lastFormDataSubmited, setLastFormDataSubmited] = useState({});
+  const [buttonSave, setButtonSave] = useState(defaultButton);
   const toast = useRef(null);
 
   const isMobile =
@@ -76,10 +89,11 @@ const ActivitieForm = () => {
 
   const handleSubmit = useCallback(
     async e => {
+      setButtonSave(loadingButton);
       e.preventDefault();
       const res = await saveActivity(formData);
       if (res.response) {
-        setFormData(defaultFormData);
+        // setFormData(defaultFormData);
         toast.current.show({
           severity: 'success',
           summary: 'Actividad guardada',
@@ -94,9 +108,16 @@ const ActivitieForm = () => {
           life: 3000,
         });
       }
+      setTimeout(() => {
+        setButtonSave(defaultButton);
+      }, 500);
     },
     [formData]
   );
+
+  const clearForm = useCallback(() => {
+    setFormData(defaultFormData);
+  }, []);
 
   const handleChange = useCallback(e => {
     const name = e.target ? e.target.name : e.source?.props?.name;
@@ -116,12 +137,24 @@ const ActivitieForm = () => {
         formData={formData}
         isMobile={isMobile}
       />
-      <div className="form-container">
+      <div className="button-container">
         <Button
           form="form-actividades"
-          label="Guardar"
+          label={buttonSave.label}
+          icon={buttonSave.icon}
+          loading={buttonSave.loading}
+          type="submit"
           onClick={handleSubmit}
-          className="p-button-raised p-button-success"
+          className="p-button-raised"
+        />
+        <Button
+          icon="pi pi-trash"
+          rounded
+          severity="danger"
+          aria-label="Clear"
+          size="large"
+          type="button"
+          onClick={clearForm}
         />
       </div>
     </>

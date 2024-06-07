@@ -60,13 +60,10 @@ async function saveActivity(data) {
     console.log('result', result);
 
     if (!response.ok) {
-      // En response viene el error como {message: ...}
-      console.error(`Error al guardar actividad: ${result.message}`);
       res.response = false;
       res.message = result.message;
     }
   } catch (error) {
-    console.error(`Error al guardar actividad: ${error}`);
     res.response = false;
     res.message = error;
   }

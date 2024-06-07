@@ -5,7 +5,6 @@
   --secondary: #0b80e0;
   --primary-colortext: #333333;
   --accent-colortext: #12c1cb;
-  color-scheme: light dark;
 }
 
 html {
@@ -20,8 +19,6 @@ html {
 }
 
 body {
-  color: light-dark(var(--primary-colortext) var(--white));
-  background-color: light-dark(var(--white) var(--black));
   font-family: "Radio Canada Big", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -73,6 +70,4 @@ main {
   color: var(--secondary);
 }
 
-.form-container {
-  margin: 5rem 0;
-}
+
