@@ -1,0 +1,27 @@
+.logo-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 100%;
+  width: 30rem;
+}
+
+.logo {
+  /*Achicar el tamaño  */
+  width: 50%;
+}
+
+.header-item {
+  font-size: 1.8rem;
+}
+
+.header-item:hover,
+.active {
+  color: var(--secondary);
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

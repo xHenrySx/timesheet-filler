@@ -24,50 +24,14 @@ body {
   font-weight: 400;
   font-style: normal;
   font-size: 2rem;
+  margin: 0;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
 
 [class*="contenedor"],
 main {
   width: min(95%, 120rem);
   margin: 3rem auto;
-}
-
-.logo {
-  width: fit-content;
-}
-
-.header .logo img {
-  width: 100%;
-  height: auto;
-}
-
-.header .barra {
-  display: grid;
-  grid-template-columns: 0.1fr 1fr;
-  align-items: center;
-  gap: 2rem;
-}
-
-.header .barra .navigation {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.navigation a {
-  text-align: center;
-  text-decoration: none;
-  color: light-dark(var(--primary-colortext) var(--white));
-  padding: 1rem;
-}
-
-.header .barra .navigation a:hover,
-.navigation .active {
-  color: var(--secondary);
 }
 
 
