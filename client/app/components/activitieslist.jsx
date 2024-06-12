@@ -48,6 +48,7 @@ export function ActivitiesList() {
             field={column.field}
             header={column.header}
             style={{ minWidth: '25%' }}
+            sortable
           />
         ))}
       </DataTable>
