@@ -41,6 +41,7 @@ export function ActivitiesList() {
         rowsPerPageOptions={[5, 10, 15]}
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
+        removableSort
       >
         {columns.map(column => (
           <Column
