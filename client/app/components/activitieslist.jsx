@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { getActivities } from '../utils/activities';
+import { getFilters } from '../utils/datatable';
 
 export function ActivitiesList() {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const filters = getFilters();
 
-  const filters = {
-    Fecha: {value: null, matchMode: FilterMatchMode.EQUALS},
-    Descripcion: {value: null, matchMode: FilterMatchMode.CONTAINS},
-    Duracion: {value: null, matchMode: FilterMatchMode.EQUALS},
-    'Jira Ticket': {value: null, matchMode: FilterMatchMode.EQUALS},
-    'Jira Cliente Ticket': {value: null, matchMode: FilterMatchMode.EQUALS},
-  };
-
+  const [lazyState, setLazyState] = useState({
+    first: 0,
+    rows: 5,
+    sortField: null,
+    sortOrder: null,
+    filters,
+  });
 
   useEffect(() => {
     async function fetchData() {
-      setData(await getActivities());
+      setData(await getActivities(lazyState));
       setLoading(false);
     }
 
-
     fetchData();
-  }, []);
+  }, [lazyState]);
 
   useEffect(() => {
     if (data.length <= 0) {
@@ -39,7 +39,16 @@ export function ActivitiesList() {
       header: column,
     }));
     setColumns(newColumns);
-  },[data]);
+  }, [data]);
+
+  const onPageOrSort = useCallback(event => {
+    setLazyState(event);
+  }, []);
+
+  const onFilter = useCallback(event => {
+    event['first'] = 0;
+    setLazyState(event);
+  }, []);
 
   return (
     <Card title="Actividades">
@@ -49,6 +58,14 @@ export function ActivitiesList() {
           minWidth: '50rem',
         }}
         loading={loading}
+        lazy
+        first={lazyState.first}
+        totalRecords={totalRecords}
+        onPage={onPageOrSort}
+        onSort={onPageOrSort}
+        onFilter={onFilter}
+        sortField={lazyState.sortField}
+        sortOrder={lazyState.sortOrder}
         paginator
         rows={5}
         rowsPerPageOptions={[5, 10, 15]}
@@ -56,7 +73,7 @@ export function ActivitiesList() {
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
         removableSort
         emptyMessage="No hay actividades."
-        filters={filters}
+        filters={lazyState.filters}
       >
         {columns.map(column => (
           <Column
@@ -66,6 +83,7 @@ export function ActivitiesList() {
             style={{ minWidth: '25%' }}
             sortable
             filter
+            filterPlaceholder='Search'
           />
         ))}
       </DataTable>

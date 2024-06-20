@@ -73,7 +73,7 @@ async function saveActivity(data) {
 /**
  * @returns {Promise<Array>}
  */
-async function getActivities() {
+async function getActivities(lazyState) {
   const res = await fetch(getVariable('VITE_API_URL') + '/api/activities');
   const response = await res.json();
   const formattedData = formatData(response);
