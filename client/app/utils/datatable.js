@@ -1,11 +1,39 @@
+import { getVariable } from './variables';
 import { FilterMatchMode } from 'primereact/api';
 
 export function getFilters() {
   return {
-    Fecha: { value: null, matchMode: FilterMatchMode.EQUALS },
-    Descripcion: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    Duracion: { value: null, matchMode: FilterMatchMode.EQUALS },
-    'Jira Ticket': { value: null, matchMode: FilterMatchMode.EQUALS },
-    'Jira Cliente Ticket': { value: null, matchMode: FilterMatchMode.EQUALS },
+    date: { value: null, matchMode: FilterMatchMode.EQUALS },
+    description: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    duration: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jiraTicket: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jiraClientTicket: { value: null, matchMode: FilterMatchMode.EQUALS },
   };
 }
+
+/**
+ * Obtiene todos los datos para construir los headers de la tabla
+ * @returns {Promise<Array>}
+ */
+export const getDataTable = async () => {
+  const url = new URL(getVariable('VITE_API_URL') + '/api/datatable');
+  try {
+    const res = await fetch(url.toString());
+    const response = await res.json();
+    if (!res.ok) {
+      return [];
+    }
+    return response;
+  }
+  catch (error) {
+    return [];
+  }
+};
+
+export const getColumns = datatable => {
+  return datatable.map(col => ({
+    column_name: col.column_name,
+    field: col.name,
+    active: col.active,
+  }));
+};

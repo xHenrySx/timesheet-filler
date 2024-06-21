@@ -1,11 +1,12 @@
-import app from "./app.js";
-import sequelize from "./database/database.js";
+import app from './app.js';
+import sequelize from './database/database.js';
 const PORT = process.env.PORT || 5000;
 const alter = process.env.ALTER || false;
 
-sequelize.sync({ force: false, alter: alter })
+sequelize
+  .sync({ force: false, alter: alter })
   .then(() => {
-    console.log("Database is connected");
+    console.log('Database is connected');
     try {
       app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
@@ -14,10 +15,7 @@ sequelize.sync({ force: false, alter: alter })
       console.log(error);
       throw error;
     }
-    
   })
-  .catch((e) => {
+  .catch(e => {
     console.log(e);
   });
-
-

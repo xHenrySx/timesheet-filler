@@ -1,4 +1,5 @@
 import { saveActivity } from '../utils/activities';
+import { showError, showSuccess } from '../utils/toast';
 import FormBody from './formbody';
 
 import { useState, useCallback, useRef } from 'react';
@@ -93,20 +94,9 @@ const ActivitieForm = () => {
       e.preventDefault();
       const res = await saveActivity(formData);
       if (res.response) {
-        // setFormData(defaultFormData);
-        toast.current.show({
-          severity: 'success',
-          summary: 'Actividad guardada',
-          detail: 'La actividad se guardo correctamente',
-          life: 3000,
-        });
+        showSuccess(toast, 'Actividad guardada', 'La actividad se guardo correctamente');
       } else {
-        toast.current.show({
-          severity: 'error',
-          summary: 'Error al guardar',
-          detail: `${res.message}`,
-          life: 3000,
-        });
+        showError(toast, 'Error', res.message);
       }
       setTimeout(() => {
         setButtonSave(defaultButton);
