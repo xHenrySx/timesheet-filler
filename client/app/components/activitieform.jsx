@@ -16,7 +16,7 @@ const defaultFormData = {
   duration: 1,
   jiraTicket: '',
   jiraClientTicket: '',
-  project: '',
+  label: '',
 };
 
 const loadingButton = {
@@ -31,7 +31,7 @@ const defaultButton = {
   loading: false,
 };
 
-const ActivitieForm = () => {
+const ActivitieForm = ({onActivitySubmit}) => {
   const [formData, setFormData] = useState(defaultFormData);
   const [buttonSave, setButtonSave] = useState(defaultButton);
   const toast = useRef(null);
@@ -93,8 +93,10 @@ const ActivitieForm = () => {
       setButtonSave(loadingButton);
       e.preventDefault();
       const res = await saveActivity(formData);
+
       if (res.response) {
         showSuccess(toast, 'Actividad guardada', 'La actividad se guardo correctamente');
+        onActivitySubmit();
       } else {
         showError(toast, 'Error', res.message);
       }

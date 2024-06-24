@@ -8,6 +8,7 @@ export function getFilters() {
     duration: { value: null, matchMode: FilterMatchMode.EQUALS },
     jiraTicket: { value: null, matchMode: FilterMatchMode.EQUALS },
     jiraClientTicket: { value: null, matchMode: FilterMatchMode.EQUALS },
+    label: { value: null, matchMode: FilterMatchMode.EQUALS },
   };
 }
 
@@ -15,8 +16,9 @@ export function getFilters() {
  * Obtiene todos los datos para construir los headers de la tabla
  * @returns {Promise<Array>}
  */
-export const getDataTable = async () => {
+export const getDataTable = async (tableId) => {
   const url = new URL(getVariable('VITE_API_URL') + '/api/datatable');
+  url.searchParams.append('table_id', tableId);
   try {
     const res = await fetch(url.toString());
     const response = await res.json();

@@ -6,4 +6,6 @@ const sequelize = new Sequelize({
   storage: './database/db.sqlite'
 });
 
+await sequelize.sync();
+
 export default sequelize;

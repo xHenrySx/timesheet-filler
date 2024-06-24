@@ -60,12 +60,12 @@ const FormBody = ({ formData, handleChange, isMobile }) => {
         <div className="project-container">
           <FloatLabel>
             <AutoComplete
-              id="project"
-              name="project"
-              value={formData?.project}
+              id="label"
+              name="label"
+              value={formData?.label}
               onChange={handleChange}
             />
-            <label htmlFor="project">Proyecto</label>
+            <label htmlFor="label">Proyecto</label>
           </FloatLabel>
         </div>
         <div className="jira-ticket-container">

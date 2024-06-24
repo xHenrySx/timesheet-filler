@@ -7,24 +7,19 @@ import { filterToWhere } from '../utils/database.js';
  * @returns {Promise<Response>}
  */
 export const createActivitie = async ({ body }, res) => {
-  const { date, description, duration, jiraTicket, jiraClientTicket } = body;
+  try {
+    const newActivitie = Activitie.build(body);
+    const res = await newActivitie.save();
 
-  if (!date || !description || !duration) {
-    return res
-      .status(400)
-      .json({ message: 'Por Favor complete todos los campos' });
+
+    return res.status(200).json({ message: 'Activitie created' });
+  } catch (error) {
+    if (error.name === 'SequelizeForeignKeyConstraintError') {
+      return res.status(400).json({ message: 'Un campo no existe en la base de datos.' });
+    } else {
+      return res.status(500).json({ message: 'Error al crear la actividad' });
+    }
   }
-
-  const newActivitie = new Activitie({
-    date,
-    description,
-    duration,
-    jiraTicket,
-    jiraClientTicket,
-  });
-
-  await newActivitie.save();
-  return res.status(200).json({ message: 'Activitie created' });
 };
 
 /**
@@ -35,17 +30,15 @@ export const createActivitie = async ({ body }, res) => {
  */
 export const getActivities = async (req, res) => {
   const { first, rows, page, sortField, sortOrder, filters } = req?.query ?? {};
-  const filter = JSON.parse(filters) || {};
+  const filter = filters ? JSON.parse(filters) : {};
   const limit = parseInt(rows, 10) || 5;
-  const offset = (parseInt(page, 10) || 1 - 1) * limit;
+  const offset = ((parseInt(page, 10) || 1) - 1) * limit;
   let validSortOrder = 'ASC';
-  if (sortOrder === '1') {
-    validSortOrder = 'ASC';
-  }
   if (sortOrder === '-1') {
     validSortOrder = 'DESC';
   }
-  const order = sortField !== 'null' ? [[sortField, validSortOrder]] : [];
+  const order =
+    sortField && sortField !== 'null' ? [[sortField, validSortOrder]] : [];
 
   let query = {};
   const where = filterToWhere(filter);
@@ -55,7 +48,6 @@ export const getActivities = async (req, res) => {
       limit,
       offset,
       order,
-
     };
   }
   console.log(query);
@@ -70,8 +62,24 @@ export const countActivities = async (req, res) => {
 
   const where = filterToWhere(filter);
   const count = await Activitie.count({ where });
-  if (!count) {
-    return res.status(500).json({ message: 'Error al contar las actividades' });
-  }
   return res.status(200).json({ count });
+};
+
+export const getAutoCompleteData = async (req, res) => {
+  const data = {};
+  const description = await Activitie.findAll({
+    attributes: ['description', 'jiraClient', 'jiraClientTicket'],
+    group: ['description', 'jiraClient', 'jiraClientTicket', 'label'],
+  });
+
+  if (!description) {
+    return res.status(500).json({ message: 'Error al obtener la descripción' });
+  }
+
+  data.description = description.map(item => item.description);
+  data.jiraClient = description.map(item => item.jiraClient);
+  data.jiraClientTicket = description.map(item => item.jiraClientTicket);
+  data.label = description.map(item => item.label);
+
+  return res.status(200).json(data);
 };

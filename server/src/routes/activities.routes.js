@@ -2,7 +2,8 @@ import { Router } from 'express';
 import {
   createActivitie,
   getActivities,
-  countActivities
+  countActivities,
+  getAutoCompleteData
 } from '../controllers/activities.controllers.js';
 
 const router = Router();
@@ -10,6 +11,7 @@ const router = Router();
 router
   .post('/', createActivitie)
   .get('/', getActivities)
-  .get('/count', countActivities);
+  .get('/count', countActivities)
+  .get('/autocomplete', getAutoCompleteData);
 
 export default router;

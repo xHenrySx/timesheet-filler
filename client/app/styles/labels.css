@@ -1,0 +1,38 @@
+body {
+  height: 100vh;
+}
+
+.label-card {
+  max-width: 350px;
+  margin: 0 auto;
+  margin-bottom: 5rem;
+  font-size: 1.6rem;
+}
+
+@media (max-width: 768px) {
+  .label-card {
+    min-width: auto;
+    max-width: auto;
+  }
+}
+
+.input-area {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+  gap: 2rem;
+  align-items: center;
+  font-size: 1.6rem;
+}
+
+.button-area {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.label-table {
+  margin: 0 auto;
+  max-width: 70rem;
+  font-size: 1.6rem;
+}

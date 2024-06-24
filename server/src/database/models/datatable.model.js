@@ -18,6 +18,10 @@ const DataTable = sequelize.define('DataTable', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  table_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 export default DataTable;

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
@@ -6,7 +6,7 @@ import { Toast } from 'primereact/toast';
 import { getActivities, countActivities } from '../utils/activities';
 import { getFilters, getDataTable } from '../utils/datatable';
 
-export function ActivitiesList() {
+export function ActivitiesList({update}) {
   const toast = useRef(null);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -24,7 +24,7 @@ export function ActivitiesList() {
 
   useEffect(() => {
     async function fetchColumns() {
-      const res = await getDataTable();
+      const res = await getDataTable(1);
       if (res.length <= 0) {
         return;
       }
@@ -36,33 +36,29 @@ export function ActivitiesList() {
 
   useEffect(() => {
     fetchActivities();
-  }, [lazyState]);
+  }, [lazyState, update]);
 
   const fetchActivities = async () => {
     setLoading(true);
     const res = await getActivities(lazyState);
     const totalRecords = await countActivities(lazyState.filters);
-    if (res.length <= 0) {
-      return;
-    }
     setData(res);
     setTotalRecords(totalRecords);
     setLoading(false);
   };
 
-  const onPage = event => {
+  const onPage = useCallback(event => {
     setLazyState(event);
-  };
+  }, []);
 
-  const onSort = event => {
-    console.log(event);
+  const onSort = useCallback(event => {
     setLazyState(event);
-  };
+  }, []);
 
-  const onFilter = event => {
+  const onFilter = useCallback(event => {
     event['first'] = 0;
     setLazyState(event);
-  };
+  }, []);
 
   return (
     <Card title="Actividades">
@@ -82,9 +78,9 @@ export function ActivitiesList() {
         sortField={lazyState.sortField}
         sortOrder={lazyState.sortOrder}
         paginator
-        rows={5}
+        rows={lazyState.rows}
         rowsPerPageOptions={[5, 10, 15]}
-        // paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
         removableSort
         emptyMessage="No hay actividades."

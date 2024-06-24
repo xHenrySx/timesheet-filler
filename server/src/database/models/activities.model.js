@@ -4,24 +4,28 @@ import sequelize from '../database.js';
 const Activitie = sequelize.define('Activitie', {
   date: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: false,
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   duration: {
     type: DataTypes.FLOAT,
-    allowNull: false
+    allowNull: false,
   },
   jiraTicket: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: true,
   },
   jiraClientTicket: {
     type: DataTypes.STRING,
-    allowNull: true
-  }
+    allowNull: true,
+  },
+  label: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 export default Activitie;
