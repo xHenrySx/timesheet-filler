@@ -3,15 +3,20 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';
-import { getActivities, countActivities } from '../utils/activities';
+import { getActivities, countActivities, deleteActivity } from '../utils/activities';
 import { getFilters, getDataTable } from '../utils/datatable';
+import { Button } from 'primereact/button';
 
-export function ActivitiesList({update}) {
+import '../styles/activitiestable.css';
+import { showError, showSuccess } from '../utils/toast';
+
+export function ActivitiesList({update, onActivityDelete}) {
   const toast = useRef(null);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [selectedActivities, setSelectedActivities] = useState([]);
 
   const [lazyState, setLazyState] = useState({
     first: 0,
@@ -60,10 +65,35 @@ export function ActivitiesList({update}) {
     setLazyState(event);
   }, []);
 
+  const onSelectionChange = useCallback(e => {
+    setSelectedActivities(e.value);
+  }
+  , []);
+
+  const deleteActivities = useCallback(async () => {
+    if (selectedActivities.length <= 0) {
+      showError(toast, 'Error', 'Selecciona una actividad');
+      return;
+    }
+    const ids = selectedActivities.map(activity => activity.id);
+    for (const id of ids) {
+          const res = await deleteActivity(id);
+          if (res.hasOwnProperty('response') && res.hasOwnProperty('message') && !res.response) {
+            const message = typeof res.message === 'string' ? res.message : 'Error al eliminar la actividad';
+            showError(toast, 'Error', message);
+            return;
+          }
+        }
+    showSuccess(toast, 'Actividades eliminadas', 'Las actividades se eliminaron correctamente');
+    setSelectedActivities([]);
+    onActivityDelete();
+  }, [selectedActivities]);
+
   return (
     <Card title="Actividades">
       <Toast ref={toast} />
       <DataTable
+        className='activities-table'
         value={data}
         tableStyle={{
           minWidth: '50rem',
@@ -85,7 +115,11 @@ export function ActivitiesList({update}) {
         removableSort
         emptyMessage="No hay actividades."
         filters={lazyState.filters}
+        dataKey="id"
+        selection={selectedActivities}
+        onSelectionChange={onSelectionChange}
       >
+        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
         {columns.map(col => (
           <Column
             key={col.id}
@@ -98,6 +132,7 @@ export function ActivitiesList({update}) {
           />
         ))}
       </DataTable>
+      <Button label='Borrar' severity='danger' outlined onClick={deleteActivities}/>
     </Card>
   );
 }

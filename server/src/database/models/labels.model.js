@@ -13,4 +13,6 @@ const Label = sequelize.define('Label', {
   },
 });
 
+// Label.sync({ alter: true });
+
 export default Label;

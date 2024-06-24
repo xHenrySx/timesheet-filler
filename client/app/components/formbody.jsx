@@ -1,11 +1,28 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { Calendar } from 'primereact/calendar';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { FloatLabel } from 'primereact/floatlabel';
 import { AutoComplete } from 'primereact/autocomplete';
+import { getLabels } from '../utils/labels';
 
 const FormBody = ({ formData, handleChange, isMobile }) => {
+
+  const [items, setItems] = useState([]);
+
+
+  const fetchLabels = async () => {
+    const labels = await getLabels();
+    return labels.map(label => label.name);
+  };
+
+  const search = async (event) => {
+    const { query } = event;
+    const labels = await fetchLabels();
+    setItems(labels.filter(label => label.toLowerCase().includes(query.toLowerCase())));
+  };
+
   return (
     <form id="form-actividades">
       <div className="form-header">
@@ -64,6 +81,9 @@ const FormBody = ({ formData, handleChange, isMobile }) => {
               name="label"
               value={formData?.label}
               onChange={handleChange}
+              suggestions={items}
+              completeMethod={search}
+              dropdown
             />
             <label htmlFor="label">Proyecto</label>
           </FloatLabel>

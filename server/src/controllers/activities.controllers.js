@@ -6,10 +6,15 @@ import { filterToWhere } from '../utils/database.js';
  * @param {Response} res - Objeto de respuesta
  * @returns {Promise<Response>}
  */
-export const createActivitie = async ({ body }, res) => {
+export const createActivitie = async (req, res) => {
   try {
+    const { body } = req;
     const newActivitie = Activitie.build(body);
-    const res = await newActivitie.save();
+    const response = await newActivitie.save();
+
+    if (!response) {
+      return res.status(500).json({ message: 'Error al crear la actividad' });
+    }
 
 
     return res.status(200).json({ message: 'Activitie created' });
@@ -82,4 +87,23 @@ export const getAutoCompleteData = async (req, res) => {
   data.label = description.map(item => item.label);
 
   return res.status(200).json(data);
+};
+
+
+export const deleteActivities = async (req, res) => {
+  try {
+    if (!req.params) {
+      return res.status(400).json({ message: 'No se encontro el id.' });
+    }
+    const { id } = req.params;
+
+    const activitie = await Activitie.destroy({
+      where: {
+        id,
+      },
+    });
+    return res.status(200).json({ message: 'Activitie eliminada.' });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };

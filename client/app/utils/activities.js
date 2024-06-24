@@ -99,4 +99,34 @@ async function countActivities(filters) {
   return response.count;
 }
 
-export { formatActivities, saveActivity, getActivities, countActivities};
+
+async function deleteActivity(id) {
+  const res = {
+    response: true,
+    message: 'Actividad eliminada',
+  };
+  try {
+    const response = await fetch(
+      getVariable('VITE_API_URL') + '/api/activities/' + id,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: '*/*',
+        },
+      }
+    );
+    const result = await response.json();
+
+    if (!response.ok) {
+      res.response = false;
+      res.message = result.message;
+    }
+  } catch (error) {
+    res.response = false;
+    res.message = error;
+  }
+  return res;
+}
+
+export { formatActivities, saveActivity, getActivities, countActivities, deleteActivity};

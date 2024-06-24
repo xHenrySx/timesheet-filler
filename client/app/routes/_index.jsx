@@ -13,7 +13,7 @@ export default function Index() {
     <div className="contenedor">
       <h1>Timesheet Filler</h1>
       <ActivitieForm onActivitySubmit={refresh} />
-      <ActivitiesList update={refreshKey} />
+      <ActivitiesList update={refreshKey} onActivityDelete={refresh} />
     </div>
   );
 }

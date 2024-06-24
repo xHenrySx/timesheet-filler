@@ -48,6 +48,7 @@ const Labels = () => {
     } catch (error) {
       showError(toast, 'Error al guardar', 'Error al guardar la etiqueta');
     }
+    fetchLabels();
   }, [formData]);
 
   const onChange = useCallback(e => {
@@ -65,7 +66,7 @@ const Labels = () => {
     }));
   }, []);
 
-  const projectBodyTemplate = project => <Tag value={project.name} style={{ background: `#${project.color}` }} />;
+  const projectBodyTemplate = project => <Tag className='label-tag' value={project.name} style={{ background: `#${project.color}` }} />;
 
   return (
     <div className="contenedor">
@@ -108,7 +109,7 @@ const Labels = () => {
         rowsPerPageOptions={[5, 10, 15]}
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
-        emptyMessage="No hay actividades."
+        emptyMessage="No hay etiquetas."
         removableSort
       >
           <Column
