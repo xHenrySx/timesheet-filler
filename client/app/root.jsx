@@ -2,9 +2,9 @@ import { Links, Meta, Outlet, Scripts } from '@remix-run/react';
 import styles from './styles/index.css?url';
 import Header from './components/header';
 import { PrimeReactProvider } from 'primereact/api';
-import 'primereact/resources/themes/lara-dark-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { useState } from 'react';
 export function meta() {
   return [
     { charset: 'utf-8' },
@@ -49,9 +49,10 @@ export function links() {
 }
 
 function App() {
+  const [theme, setTheme] = useState('mira');
   return (
     <PrimeReactProvider>
-      <Document>
+      <Document theme={theme} setTheme={setTheme}>
         <Outlet />
       </Document>
     </PrimeReactProvider>
@@ -60,15 +61,16 @@ function App() {
 
 export default App;
 
-function Document({ children }) {
+function Document({ children, theme, setTheme }) {
   return (
     <html lang="es">
       <head>
         <Meta />
         <Links />
+        <link id={`${theme}-link`} rel="stylesheet" href={`./themes/${theme}/theme.css`} />
       </head>
       <body>
-        <Header />
+        <Header theme={theme} setTheme={setTheme} />
         {children}
         <Scripts />
       </body>

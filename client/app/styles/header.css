@@ -25,3 +25,7 @@
   justify-content: end;
   align-items: center;
 }
+
+.light {
+  filter: invert(1);
+}

@@ -1,15 +1,16 @@
 import { Link, useLocation } from '@remix-run/react';
 import { Menubar } from 'primereact/menubar';
+import ThemeSelector from './themeselector';
 
 import '../styles/header.css';
 
-const Header = () => {
+const Header = ({ theme, setTheme }) => {
   const location = useLocation();
 
   const itemRender = item => {
     return (
       <div className="flex">
-        <i className={`${item.icon} nav-icon`}  style={{fontSize: '1.8rem'}}/>
+        <i className={`${item.icon} nav-icon`} style={{ fontSize: '1.8rem' }} />
         <Link
           to={item.url}
           className={`p-menuitem-link ${
@@ -46,16 +47,19 @@ const Header = () => {
   const start = (
     <Link to="/" className="logo-container">
       <img
+        id={`logo-${theme}`}
         src="https://sodep.com.py/wp-content/uploads/2023/06/sodep-logo_white-1.png"
         alt="Logo Sodep S.A."
-        className="logo"
+        className="logo light"
       />
     </Link>
   );
 
+  const end = <ThemeSelector theme={theme} setTheme={setTheme} />;
+
   return (
     <header>
-      <Menubar model={items} start={start} style={{justifyContent: 'space-between'}} />
+      <Menubar model={items} start={start} end={end} />
     </header>
   );
 };
