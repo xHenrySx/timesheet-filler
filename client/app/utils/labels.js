@@ -16,8 +16,31 @@ async function saveLabel(data) {
   const response = await res.json();
   return {
     ok: res.ok,
-    response
+    response,
   };
 }
 
-export { getLabels, saveLabel };
+async function deleteLabel(id) {
+  const response = {
+    response: true,
+    message: 'Etiqueta eliminada correctamente',
+  };
+  const res = await fetch(`${getVariable('VITE_API_URL')}/api/labels/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: '*/*',
+    },
+  });
+
+  const { message } = await res.json();
+
+  if (!res.ok) {
+    response.response = false;
+    response.message = message;
+  }
+
+  return response;
+}
+
+export { getLabels, saveLabel, deleteLabel };

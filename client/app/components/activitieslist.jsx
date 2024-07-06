@@ -22,8 +22,8 @@ export function ActivitiesList({update, onActivityDelete}) {
     first: 0,
     rows: 5,
     page: 1,
-    sortField: 'date',
-    sortOrder: 1,
+    sortField: 'date', // desC
+    sortOrder: -1,
     filters: getFilters(),
   });
 

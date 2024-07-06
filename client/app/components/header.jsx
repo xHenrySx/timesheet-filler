@@ -10,13 +10,13 @@ const Header = ({ theme, setTheme }) => {
   const itemRender = item => {
     return (
       <div className="flex">
-        <i className={`${item.icon} nav-icon`} style={{ fontSize: '1.8rem' }} />
         <Link
           to={item.url}
           className={`p-menuitem-link ${
             location.pathname === item.url ? ' active' : ''
           } header-item`}
         >
+          <i className={`${item.icon} nav-icon`} style={{ fontSize: '1.8rem' }} />
           {item.label}
         </Link>
       </div>

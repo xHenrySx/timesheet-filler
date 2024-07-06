@@ -7,7 +7,7 @@ import { Toast } from 'primereact/toast';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
-import { saveLabel, getLabels } from '../utils/labels';
+import { saveLabel, getLabels, deleteLabel } from '../utils/labels';
 import { showError, showSuccess } from '../utils/toast';
 import { getDataTable } from '../utils/datatable';
 
@@ -20,6 +20,7 @@ const Labels = () => {
   const [value, setValue] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const toast = useRef(null);
 
   useEffect(() => {
@@ -66,10 +67,37 @@ const Labels = () => {
     }));
   }, []);
 
-  const projectBodyTemplate = project => <Tag className='label-tag' value={project.name} style={{ background: `#${project.color}` }} />;
+  const deleteLabels = useCallback(async () => {
+    if (selectedLabels.length <= 0) {
+      showError(toast, 'Error al eliminar', 'Seleccione etiquetas a eliminar');
+      return;
+    }
+    const ids = selectedLabels.map(label => label.name);
+    for (const id of ids) {
+      const res = await deleteLabel(id);
+      if (!res.response) {
+        showError(toast, 'Error al eliminar', res.message);
+        return;
+      }
+      showSuccess(toast, 'Eliminado', 'Etiqueta eliminada correctamente');
+      fetchLabels();
+    }
+  }, [selectedLabels]);
+
+
+  const onSelectionChange = useCallback(e => {
+    setSelectedLabels(e.value);
+  }, []);
+  const projectBodyTemplate = project => (
+    <Tag
+      className="label-tag"
+      value={project.name}
+      style={{ background: `#${project.color}` }}
+    />
+  );
 
   return (
-    <div className="contenedor">
+    <div className="contenedor label-container">
       <Toast ref={toast} />
       <Card
         title="Proyectos"
@@ -99,7 +127,7 @@ const Labels = () => {
       </Card>
       <DataTable
         value={value}
-        className='label-table'
+        className="label-table"
         tableStyle={{
           minWidth: '20rem',
         }}
@@ -111,21 +139,33 @@ const Labels = () => {
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
         emptyMessage="No hay etiquetas."
         removableSort
+        selection={selectedLabels}
+        onSelectionChange={onSelectionChange}
       >
-          <Column
-            field='name'
-            header='Proyecto'
-            style={{ minWidth: '25%' }}
-            body={projectBodyTemplate}
-            sortable
-          />
-          <Column
-            field='color'
-            header='Color'
-            style={{ minWidth: '25%' }}
-            sortable
-          />
+        <Column
+          selectionMode="multiple"
+          headerStyle={{ width: '3rem' }}
+        ></Column>
+        <Column
+          field="name"
+          header="Proyecto"
+          style={{ minWidth: '25%' }}
+          body={projectBodyTemplate}
+          sortable
+        />
+        <Column
+          field="color"
+          header="Color"
+          style={{ minWidth: '25%' }}
+          sortable
+        />
       </DataTable>
+      <Button
+        label="Borrar"
+        severity="danger"
+        outlined
+        onClick={deleteLabels}
+      />
     </div>
   );
 };

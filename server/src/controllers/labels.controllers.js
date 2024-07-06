@@ -63,7 +63,7 @@ export const updateLabel = async (req, res) => {
 export const deleteLabel = async (req, res) => {
   try {
     if (!req.params) {
-      return res.status(400).json({ message: 'Params with name are required' });
+      return res.status(400).json({ message: 'No se recibio el identificador de la etiqueta' });
     }
     const { name } = req.params;
 
@@ -72,7 +72,7 @@ export const deleteLabel = async (req, res) => {
         name,
       },
     });
-    return res.status(200).json(label);
+    return res.status(200).json({ message: 'Etiqueta eliminada' });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
