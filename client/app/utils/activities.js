@@ -1,5 +1,5 @@
 import { getVariable } from './variables';
-import { formatDate } from './date';
+import { dateToString } from './date';
 
 /**
  * @param {Array} data
@@ -10,7 +10,7 @@ function formatActivities(data) {
   return data.map(activity => {
     for (const key in activity) {
       if (key === 'date') {
-        activity[key] = formatDate(activity[key]);
+        activity[key] = dateToString(activity[key]);
       }
     }
     return activity;
@@ -99,7 +99,6 @@ async function countActivities(filters) {
   return response.count;
 }
 
-
 async function deleteActivity(id) {
   const res = {
     response: true,
@@ -129,4 +128,42 @@ async function deleteActivity(id) {
   return res;
 }
 
-export { formatActivities, saveActivity, getActivities, countActivities, deleteActivity};
+async function editActivity(id, data) {
+  console.log(id, data);
+  const res = {
+    response: true,
+    message: 'Actividad actualizada',
+  };
+  try {
+    const response = await fetch(
+      getVariable('VITE_API_URL') + '/api/activities/' + id,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: '*/*',
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const result = await response.json();
+
+    if (!response.ok) {
+      res.response = false;
+      res.message = result.message;
+    }
+  } catch (error) {
+    res.response = false;
+    res.message = error;
+  }
+  return res;
+}
+
+export {
+  formatActivities,
+  saveActivity,
+  getActivities,
+  countActivities,
+  deleteActivity,
+  editActivity
+};

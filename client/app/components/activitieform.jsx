@@ -9,6 +9,7 @@ import { Toast } from 'primereact/toast';
 import { addLocale } from 'primereact/api';
 
 import '../styles/activitieform.css';
+import useIsMobile from '../hooks/useIsMobile';
 
 const defaultFormData = {
   date: new Date(),
@@ -36,11 +37,7 @@ const ActivitieForm = ({onActivitySubmit}) => {
   const [buttonSave, setButtonSave] = useState(defaultButton);
   const toast = useRef(null);
 
-  const isMobile =
-    typeof navigator !== 'undefined' &&
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
+  const isMobile = useIsMobile();
 
   addLocale('es', {
     firstDayOfWeek: 1,

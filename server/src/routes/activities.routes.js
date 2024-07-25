@@ -4,7 +4,8 @@ import {
   getActivities,
   countActivities,
   getAutoCompleteData,
-  deleteActivities
+  deleteActivities,
+  updateActivitie
 } from '../controllers/activities.controllers.js';
 
 const router = Router();
@@ -14,6 +15,7 @@ router
   .get('/', getActivities)
   .get('/count', countActivities)
   .get('/autocomplete', getAutoCompleteData)
-  .delete('/:id', deleteActivities);
+  .delete('/:id', deleteActivities)
+  .put('/:id', updateActivitie);
 
 export default router;

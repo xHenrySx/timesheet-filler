@@ -16,11 +16,12 @@ export const createActivitie = async (req, res) => {
       return res.status(500).json({ message: 'Error al crear la actividad' });
     }
 
-
     return res.status(200).json({ message: 'Activitie created' });
   } catch (error) {
     if (error.name === 'SequelizeForeignKeyConstraintError') {
-      return res.status(400).json({ message: 'Un campo no existe en la base de datos.' });
+      return res
+        .status(400)
+        .json({ message: 'Un campo no existe en la base de datos.' });
     } else {
       return res.status(500).json({ message: 'Error al crear la actividad' });
     }
@@ -89,7 +90,6 @@ export const getAutoCompleteData = async (req, res) => {
   return res.status(200).json(data);
 };
 
-
 export const deleteActivities = async (req, res) => {
   try {
     if (!req.params) {
@@ -105,5 +105,33 @@ export const deleteActivities = async (req, res) => {
     return res.status(200).json({ message: 'Activitie eliminada.' });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateActivitie = async (req, res) => {
+  try {
+    const { body } = req;
+    const { id } = req.params;
+    const activitie = await Activitie.findByPk(id);
+    if (!activitie) {
+      return res.status(400).json({ message: 'Activitie not found' });
+    }
+    const response = await activitie.update(body);
+    if (!response) {
+      return res
+        .status(500)
+        .json({ message: 'Error al actualizar la actividad' });
+    }
+    return res.status(200).json({ message: 'Activitie updated' });
+  } catch (error) {
+    if (error.name === 'SequelizeForeignKeyConstraintError') {
+      return res
+        .status(400)
+        .json({ message: 'Un campo no existe en la base de datos.' });
+    } else {
+      return res
+        .status(500)
+        .json({ message: 'Error al actualizar la actividad' });
+    }
   }
 };

@@ -3,16 +3,24 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';
-import { getActivities, countActivities, deleteActivity } from '../utils/activities';
-import { getFilters, getDataTable } from '../utils/datatable';
 import { Button } from 'primereact/button';
 
-import '../styles/activitiestable.css';
+import DynamicEditor from './dynamicEditor';
+
+import {
+  getActivities,
+  countActivities,
+  deleteActivity,
+  editActivity,
+} from '../utils/activities';
+import { getFilters, getDataTable } from '../utils/datatable';
 import { showError, showSuccess } from '../utils/toast';
 
-export function ActivitiesList({update, onActivityDelete}) {
+import '../styles/activitiestable.css';
+
+export function ActivitiesList({ update, onActivityDelete }) {
   const toast = useRef(null);
-  const [data, setData] = useState([]);
+  const [activities, setActivities] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -47,7 +55,7 @@ export function ActivitiesList({update, onActivityDelete}) {
     setLoading(true);
     const res = await getActivities(lazyState);
     const totalRecords = await countActivities(lazyState.filters);
-    setData(res);
+    setActivities(res);
     setTotalRecords(totalRecords);
     setLoading(false);
   };
@@ -67,8 +75,41 @@ export function ActivitiesList({update, onActivityDelete}) {
 
   const onSelectionChange = useCallback(e => {
     setSelectedActivities(e.value);
-  }
-  , []);
+  }, []);
+
+  const onRowEditComplete = useCallback(async e => {
+    const { data, newData } = e;
+    if (!data || !newData) {
+      return;
+    }
+    const res = await editActivity(data.id, newData);
+    if (
+      res.hasOwnProperty('response') &&
+      res.hasOwnProperty('message') &&
+      !res.response
+    ) {
+      showError(toast, 'Error', res.message);
+      return;
+    }
+    showSuccess(
+      toast,
+      'Actividad editada',
+      'La actividad se edito correctamente'
+    );
+    fetchActivities();
+  }, []);
+
+  const handleOption = useCallback(options => {
+    const { autocompleteFrom, autocompleteField, editor_type } = options.column.props;
+    return (
+      <DynamicEditor
+        options={options}
+        type={editor_type}
+        autocompleteFrom={autocompleteFrom}
+        autocompleField={autocompleteField}
+      />
+    );
+  }, []);
 
   const deleteActivities = useCallback(async () => {
     if (selectedActivities.length <= 0) {
@@ -77,14 +118,25 @@ export function ActivitiesList({update, onActivityDelete}) {
     }
     const ids = selectedActivities.map(activity => activity.id);
     for (const id of ids) {
-          const res = await deleteActivity(id);
-          if (res.hasOwnProperty('response') && res.hasOwnProperty('message') && !res.response) {
-            const message = typeof res.message === 'string' ? res.message : 'Error al eliminar la actividad';
-            showError(toast, 'Error', message);
-            return;
-          }
-        }
-    showSuccess(toast, 'Actividades eliminadas', 'Las actividades se eliminaron correctamente');
+      const res = await deleteActivity(id);
+      if (
+        res.hasOwnProperty('response') &&
+        res.hasOwnProperty('message') &&
+        !res.response
+      ) {
+        const message =
+          typeof res.message === 'string'
+            ? res.message
+            : 'Error al eliminar la actividad';
+        showError(toast, 'Error', message);
+        return;
+      }
+    }
+    showSuccess(
+      toast,
+      'Actividades eliminadas',
+      'Las actividades se eliminaron correctamente'
+    );
     setSelectedActivities([]);
     onActivityDelete();
   }, [selectedActivities]);
@@ -93,46 +145,63 @@ export function ActivitiesList({update, onActivityDelete}) {
     <Card title="Actividades">
       <Toast ref={toast} />
       <DataTable
-        className='activities-table'
-        value={data}
-        tableStyle={{
-          minWidth: '50rem',
-        }}
+        className="activities-table"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
+        dataKey="id"
+        editMode="row"
+        emptyMessage="No hay actividades."
+        filters={lazyState.filters}
+        first={lazyState.first}
         loading={loading}
         lazy
-        first={lazyState.first}
-        totalRecords={totalRecords}
+        onSelectionChange={onSelectionChange}
         onPage={onPage}
         onSort={onSort}
         onFilter={onFilter}
+        onRowEditComplete={onRowEditComplete}
+        paginator
+        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        rowsPerPageOptions={[5, 10, 15]}
+        rows={lazyState.rows}
+        removableSort
         sortField={lazyState.sortField}
         sortOrder={lazyState.sortOrder}
-        paginator
-        rows={lazyState.rows}
-        rowsPerPageOptions={[5, 10, 15]}
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
-        removableSort
-        emptyMessage="No hay actividades."
-        filters={lazyState.filters}
-        dataKey="id"
         selection={selectedActivities}
-        onSelectionChange={onSelectionChange}
+        stateStorage="local"
+        stateKey="activities-table"
+        tableStyle={{
+          minWidth: '50rem',
+        }}
+        totalRecords={totalRecords}
+        value={activities}
       >
-        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+        <Column
+          selectionMode="multiple"
+          headerStyle={{ width: '3rem' }}
+        ></Column>
         {columns.map(col => (
           <Column
             key={col.id}
             field={col.column_name}
             header={col.visual_name}
             style={{ minWidth: '25%' }}
+            autocompleteFrom={col.autocomplete_from}
+            autocompleteField={col.autocomplete_field}
+            editor_type={col.editor_type}
+            editor={handleOption}
             sortable
             filter
             // filterField={col.column_name}
           />
         ))}
+        <Column rowEditor={true} />
       </DataTable>
-      <Button label='Borrar' severity='danger' outlined onClick={deleteActivities}/>
+      <Button
+        label="Borrar"
+        severity="danger"
+        outlined
+        onClick={deleteActivities}
+      />
     </Card>
   );
 }

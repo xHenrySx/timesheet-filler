@@ -22,6 +22,19 @@ const DataTable = sequelize.define('DataTable', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  editor_type: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  autocomplete_from: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  autocomplete_field: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
+// DataTable.sync({ alter: true });
 
 export default DataTable;

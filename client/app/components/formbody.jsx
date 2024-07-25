@@ -5,23 +5,20 @@ import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { FloatLabel } from 'primereact/floatlabel';
 import { AutoComplete } from 'primereact/autocomplete';
-import { getLabels } from '../utils/labels';
+import { useLabels } from '../hooks/useLabels';
+
 
 const FormBody = ({ formData, handleChange, isMobile }) => {
 
   const [items, setItems] = useState([]);
+  const labels = useLabels(['name']);
 
-
-  const fetchLabels = async () => {
-    const labels = await getLabels();
-    return labels.map(label => label.name);
-  };
-
-  const search = async (event) => {
+  const search = async event => {
     const { query } = event;
-    const labels = await fetchLabels();
     setItems(labels.filter(label => label.toLowerCase().includes(query.toLowerCase())));
   };
+
+  const handleCompleteMethod = search;
 
   return (
     <form id="form-actividades">
@@ -82,7 +79,7 @@ const FormBody = ({ formData, handleChange, isMobile }) => {
               value={formData?.label}
               onChange={handleChange}
               suggestions={items}
-              completeMethod={search}
+              completeMethod={handleCompleteMethod}
               dropdown
             />
             <label htmlFor="label">Proyecto</label>
