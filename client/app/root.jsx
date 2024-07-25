@@ -1,6 +1,6 @@
 import { Links, Meta, Outlet, Scripts } from '@remix-run/react';
 import styles from './styles/index.css?url';
-import Header from './components/header';
+import Header from './components/UI/Header/Header';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';

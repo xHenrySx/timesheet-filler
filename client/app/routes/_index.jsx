@@ -1,5 +1,5 @@
-import ActivitieForm from '../components/activitieform';
-import { ActivitiesList } from '../components/activitieslist';
+import ActivitieForm from '../components/Forms/ActivitieForm';
+import ActivitieTable from '../components/Tables/ActivitieTable';
 import { useCallback, useState } from 'react';
 
 export default function Index() {
@@ -13,7 +13,7 @@ export default function Index() {
     <div className="contenedor">
       <h1>Timesheet Filler</h1>
       <ActivitieForm onActivitySubmit={refresh} />
-      <ActivitiesList update={refreshKey} onActivityDelete={refresh} />
+      <ActivitieTable update={refreshKey} onActivityDelete={refresh} />
     </div>
   );
 }

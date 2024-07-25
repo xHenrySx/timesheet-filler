@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Calendar } from 'primereact/calendar';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { FloatLabel } from 'primereact/floatlabel';
 import { AutoComplete } from 'primereact/autocomplete';
-import { useLabels } from '../hooks/useLabels';
+import { useLabels } from '../../hooks/useLabels';
 
 
-const FormBody = ({ formData, handleChange, isMobile }) => {
+const ActivitieFormBody = ({ formData, handleChange, isMobile }) => {
 
   const [items, setItems] = useState([]);
   const labels = useLabels(['name']);
@@ -112,10 +112,10 @@ const FormBody = ({ formData, handleChange, isMobile }) => {
   );
 };
 
-FormBody.propTypes = {
+ActivitieFormBody.propTypes = {
   formData: PropTypes.object,
   handleChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };
 
-export default FormBody;
+export default ActivitieFormBody;

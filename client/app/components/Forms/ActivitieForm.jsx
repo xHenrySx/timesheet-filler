@@ -1,6 +1,6 @@
-import { saveActivity } from '../utils/activities';
-import { showError, showSuccess } from '../utils/toast';
-import FormBody from './formbody';
+import { saveActivity } from '../../utils/activities';
+import { showError, showSuccess } from '../../utils/toast';
+import ActivitieFormBody from './ActivitieFormBody';
 
 import { useState, useCallback, useRef } from 'react';
 
@@ -8,8 +8,8 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { addLocale } from 'primereact/api';
 
-import '../styles/activitieform.css';
-import useIsMobile from '../hooks/useIsMobile';
+import '../../styles/activitieform.css';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const defaultFormData = {
   date: new Date(),
@@ -121,7 +121,7 @@ const ActivitieForm = ({onActivitySubmit}) => {
   return (
     <>
       <Toast ref={toast} />
-      <FormBody
+      <ActivitieFormBody
         handleChange={handleChange}
         formData={formData}
         isMobile={isMobile}

@@ -5,10 +5,10 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { AutoComplete } from 'primereact/autocomplete';
 
-import useIsMobile from '../hooks/useIsMobile';
-import { useData } from '../hooks/useData';
+import useIsMobile from '../../hooks/useIsMobile';
+import { useData } from '../../hooks/useData';
 
-import { stringToDate } from '../utils/date';
+import { stringToDate } from '../../utils/date';
 
 const DynamicEditor = ({
   options,

@@ -1,25 +1,23 @@
 import { Link, useLocation } from '@remix-run/react';
 import { Menubar } from 'primereact/menubar';
-import ThemeSelector from './themeselector';
+import ThemeSelector from './ThemeSelector';
 
-import '../styles/header.css';
+import '../../../styles/header.css';
 
 const Header = ({ theme, setTheme }) => {
   const location = useLocation();
 
   const itemRender = item => {
     return (
-      <div className="flex">
-        <Link
-          to={item.url}
-          className={`p-menuitem-link ${
-            location.pathname === item.url ? ' active' : ''
-          } header-item`}
-        >
-          <i className={`${item.icon} nav-icon`} style={{ fontSize: '1.8rem' }} />
-          {item.label}
-        </Link>
-      </div>
+      <Link
+        to={item.url}
+        className={`p-menuitem-link${
+          location.pathname === item.url ? ' active' : ''
+        } header-item`}
+      >
+        <i className={`${item.icon} nav-icon`} style={{ fontSize: '1.8rem' }} />
+        {item.label}
+      </Link>
     );
   };
 
@@ -57,11 +55,7 @@ const Header = ({ theme, setTheme }) => {
 
   const end = <ThemeSelector theme={theme} setTheme={setTheme} />;
 
-  return (
-    <header>
-      <Menubar model={items} start={start} end={end} />
-    </header>
-  );
+  return <Menubar model={items} start={start} end={end} />;
 };
 
 export default Header;

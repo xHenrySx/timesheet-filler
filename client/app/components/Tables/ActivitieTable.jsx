@@ -5,20 +5,20 @@ import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 
-import DynamicEditor from './dynamicEditor';
+import DynamicEditor from '../Forms/DynamicEditor';
 
 import {
   getActivities,
   countActivities,
   deleteActivity,
   editActivity,
-} from '../utils/activities';
-import { getFilters, getDataTable } from '../utils/datatable';
-import { showError, showSuccess } from '../utils/toast';
+} from '../../utils/activities';
+import { getFilters, getDataTable } from '../../utils/datatable';
+import { showError, showSuccess } from '../../utils/toast';
 
-import '../styles/activitiestable.css';
+import '../../styles/activitiestable.css';
 
-export function ActivitiesList({ update, onActivityDelete }) {
+const ActivitieTable = ({ update, onActivityDelete }) => {
   const toast = useRef(null);
   const [activities, setActivities] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -100,7 +100,8 @@ export function ActivitiesList({ update, onActivityDelete }) {
   }, []);
 
   const handleOption = useCallback(options => {
-    const { autocompleteFrom, autocompleteField, editor_type } = options.column.props;
+    const { autocompleteFrom, autocompleteField, editor_type } =
+      options.column.props;
     return (
       <DynamicEditor
         options={options}
@@ -204,4 +205,6 @@ export function ActivitiesList({ update, onActivityDelete }) {
       />
     </Card>
   );
-}
+};
+
+export default ActivitieTable;
