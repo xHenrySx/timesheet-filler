@@ -30,16 +30,3 @@ body {
   justify-content: center;
   margin: 0 auto;
 }
-
-.label-table {
-  margin: 0 auto;
-  /* max-width: 70rem; */
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-}
-
-
-
-.label-table td, .label-tag {
-  font-size: 1.6rem;
-}

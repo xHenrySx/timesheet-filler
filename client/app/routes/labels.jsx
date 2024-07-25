@@ -12,6 +12,8 @@ import { showError, showSuccess } from '../utils/toast';
 import { getDataTable } from '../utils/datatable';
 
 import '../styles/labels.css';
+import LabelTable from '../components/Tables/LabelTable';
+import LabelForm from '../components/Forms/LabelForm';
 
 const defaultFormData = { name: '', color: '2457AC' };
 
@@ -36,7 +38,7 @@ const Labels = () => {
     setLoading(false);
   };
 
-  const onSumit = useCallback(async () => {
+  const onSubmit = useCallback(async () => {
     try {
       const res = await saveLabel(formData);
       if (!res.ok) {
@@ -84,82 +86,31 @@ const Labels = () => {
     }
   }, [selectedLabels]);
 
-
   const onSelectionChange = useCallback(e => {
     setSelectedLabels(e.value);
   }, []);
-  const projectBodyTemplate = project => (
-    <Tag
-      className="label-tag"
-      value={project.name}
-      style={{ background: `#${project.color}` }}
-    />
+  const projectBodyTemplate = useCallback(
+    project => (
+      <Tag
+        // className="label-tag"
+        value={project.name}
+        style={{ background: `#${project.color}` }}
+      />
+    ),
+    []
   );
 
   return (
     <div className="contenedor label-container">
       <Toast ref={toast} />
-      <Card
-        title="Proyectos"
-        subTitle="Etiquetas de proyectos"
-        className="label-card"
-      >
-        <div className="input-area">
-          <InputText
-            id="name"
-            name="name"
-            placeholder="Nombre del proyecto"
-            onChange={onChange}
-            value={formData.name}
-            required
-          />
-          <ColorPicker
-            id="color"
-            name="color"
-            value={formData.color}
-            onChange={onColorChange}
-            required
-          />
-        </div>
-        <div className="button-area">
-          <Button label="Crear" icon="pi pi-check" onClick={onSumit} />
-        </div>
-      </Card>
-      <DataTable
+      <LabelForm formData={formData} onChange={onChange} onColorChange={onColorChange} onSubmit={onSubmit} />
+      <LabelTable
         value={value}
-        className="label-table"
-        tableStyle={{
-          minWidth: '20rem',
-        }}
         loading={loading}
-        paginator
-        rows={5}
-        rowsPerPageOptions={[5, 10, 15]}
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} actividades"
-        emptyMessage="No hay etiquetas."
-        removableSort
-        selection={selectedLabels}
+        selectedLabels={selectedLabels}
         onSelectionChange={onSelectionChange}
-      >
-        <Column
-          selectionMode="multiple"
-          headerStyle={{ width: '3rem' }}
-        ></Column>
-        <Column
-          field="name"
-          header="Proyecto"
-          style={{ minWidth: '25%' }}
-          body={projectBodyTemplate}
-          sortable
-        />
-        <Column
-          field="color"
-          header="Color"
-          style={{ minWidth: '25%' }}
-          sortable
-        />
-      </DataTable>
+        projectBodyTemplate={projectBodyTemplate}
+      />
       <Button
         label="Borrar"
         severity="danger"
