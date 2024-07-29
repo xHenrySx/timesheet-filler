@@ -53,11 +53,16 @@ const ActivitieTable = ({ update, onActivityDelete }) => {
 
   const fetchActivities = async () => {
     setLoading(true);
-    const res = await getActivities(lazyState);
-    const totalRecords = await countActivities(lazyState.filters);
-    setActivities(res);
-    setTotalRecords(totalRecords);
-    setLoading(false);
+    try {
+      const res = await getActivities(lazyState);
+      const totalRecords = await countActivities(lazyState.filters);
+      setActivities(res);
+      setTotalRecords(totalRecords);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   const onPage = useCallback(event => {
@@ -161,7 +166,7 @@ const ActivitieTable = ({ update, onActivityDelete }) => {
         onFilter={onFilter}
         onRowEditComplete={onRowEditComplete}
         paginator
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        // paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         rowsPerPageOptions={[5, 10, 15]}
         rows={lazyState.rows}
         removableSort
@@ -186,6 +191,7 @@ const ActivitieTable = ({ update, onActivityDelete }) => {
             field={col.column_name}
             header={col.visual_name}
             style={{ minWidth: '25%' }}
+            className='h-64 w-80'
             autocompleteFrom={col.autocomplete_from}
             autocompleteField={col.autocomplete_field}
             editor_type={col.editor_type}
